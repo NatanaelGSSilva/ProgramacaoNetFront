@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="estilos.css">
+    <title>Revenda de Automoveis Avenida</title>
+    <!-- Vue JS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- Axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="container" id="app">
+
+        <!-- Menu Superior -->
+        <nav class="navbar navbar-dark bg-danger">
+            <a class="navbar-brand" href="#">
+                <img src="carro.png" width="30" height="30" class="d-inline-block align-top" alt="Cinema">
+                Revenda Avenida
+            </a>
+        </nav>
+
+        <div class="mt-2">
+            <div class="row">
+
+                <!-- Formulário -->
+                <div class="col-sm-4">
+                    <div class="card">
+                        <h5 class="card-header">Cadastro de Veiculos Avenida</h5>
+                        <div class="card-body">
+                            <form @submit.prevent="salvar">
+                                <div class="form-group">
+                                    <!-- v-model muda o valor da variavel -->
+                                    <input type="text" class="form-control" name="marca" ref="marca"
+                                        v-model="veiculo.marca" placeholder="Marca do carro">
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="modelo" v-model="veiculo.modelo"
+                                        placeholder="Modelo do Veiculo">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="cor" v-model="veiculo.cor"
+                                                placeholder="Cor">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="ano" placeholder="Ano"
+                                                v-model="veiculo.ano">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="preco" placeholder="Preço"
+                                                v-model="veiculo.preco">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="btn-group w-100" role="group">
+                                    <input type="submit" class="btn btn-primary" value='Salvar'>
+                                    <input type="reset" class="btn btn-danger" value='Limpar'>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <img src="Brasilia.jpg" alt="Cinema" class="img-fluid mx-auto d-block w-100 mt-2">
+                </div>
+
+                <!-- Listagem -->
+                <div class="col-sm-8">
+                    <div class="card">
+                        <h5 class="card-header">Lista de Veiculos Cadastrados</h5>
+                        <div class="card-body">
+                            <table class="table table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Cód.</th>
+                                        <th>Marca</th>
+                                        <th>Modelo</th>
+                                        <th>Cor</th>
+                                        <th>Ano</th>
+                                        <th>Preço</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="veiculo in veiculos" v-bind:key="veiculo.id">
+                                        <td>{{veiculo.id}}</td>
+                                        <td>{{veiculo.marca}}</td>
+                                        <td>{{veiculo.modelo}}</td>
+                                        <td>{{veiculo.cor}}</td>
+                                        <td>{{veiculo.ano}}</td>
+                                        <td>{{veiculo.preco}}</td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm" title="Alterar"
+                                                @click="editar(veiculo.id)">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-sm" title="Excluir"
+                                                @click="excluir(veiculo.id)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="veiculos.js"></script>
+</body>
+
+</html>
