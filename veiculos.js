@@ -10,7 +10,8 @@ new Vue({
         cor: null,
         ano: null,
         preco: null,
-      }
+      },
+      filtro:""// declarar uma variavel 
     };
   },
   mounted() {
@@ -21,6 +22,7 @@ new Vue({
       axios
         .get('http://127.0.0.1:5000/veiculos')
         .then(response => (this.veiculos = response.data));
+        this.filtro = '';
     },
 
     salvar() {
@@ -53,7 +55,33 @@ new Vue({
         .get('http://127.0.0.1:5000/veiculos/' + id)
         .then(response => (this.veiculo = response.data));
       this.$refs.marca.focus()// posicionar no campo
-    }
+    },
 
+    excluir(id, modelo, preco) {
+      if (confirm(`Confirma  exclusão do veiculo '${modelo}' com preço de  '${preco}'? `)) {
+        axios
+          .delete('http://127.0.0.1:5000/veiculos/' + id)
+          .then((response) => {
+            alert(`Ok! Veiculo '${modelo}' com preço '${preco}' excluido com  sucesso!`)
+            this.listar();
+          });
+
+      }
+    },
+    pesquisar() {
+      if(this.filtro.lenght == 0){
+        this.listar();
+      } else{
+      axios
+        // .get('http://127.0.0.1:5000/veiculos/pesq/')
+        .get(`http://127.0.0.1:5000/veiculos/pesq/${this.filtro}`)
+        .then(response => (this.veiculos = response.data));
+      }
+    },
+  },
+  filters:{
+    formataPreco(value){
+      return value.toFixed(1)
+    }
   }
 });

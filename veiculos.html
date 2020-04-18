@@ -25,6 +25,13 @@
                 <img src="carro.png" width="30" height="30" class="d-inline-block align-top" alt="Cinema">
                 Revenda Avenida
             </a>
+            <nav class="navbar navbar-expand-sm bg-danger navbar-dark">
+                <form class="form-inline">
+                    <input class="form-control form-control-sm mr-sm-2" type="text" v-model="filtro" @keyup="pesquisar"
+                        placeholder="Pesquisa">
+                    <button class="btn btn-success btn-sm" @click.prevent="listar">Carros</button>
+                </form>
+            </nav>
         </nav>
 
         <div class="mt-2">
@@ -84,7 +91,12 @@
                 <!-- Listagem -->
                 <div class="col-sm-8">
                     <div class="card">
-                        <h5 class="card-header">Lista de Veiculos Cadastrados</h5>
+                        <h5 class="card-header">Lista de Veiculos Cadastrados
+                            <span v-if="filtro">
+                                <!-- Se ouver algo digitado no meu campo formulario ele me mostra o filtro do lado da lista de veiculos -->
+                            [Filtro: '{{filtro}}'] 
+                        </span>
+                        </h5>
                         <div class="card-body">
                             <table class="table table-hover table-sm">
                                 <thead>
@@ -105,14 +117,14 @@
                                         <td>{{veiculo.modelo}}</td>
                                         <td>{{veiculo.cor}}</td>
                                         <td>{{veiculo.ano}}</td>
-                                        <td>{{veiculo.preco}}</td>
+                                        <td>{{veiculo.preco | formataPreco}}</td>
                                         <td>
                                             <button class="btn btn-warning btn-sm" title="Alterar"
                                                 @click="editar(veiculo.id)">
                                                 <i class="far fa-edit"></i>
                                             </button>
                                             <button class="btn btn-danger btn-sm" title="Excluir"
-                                                @click="excluir(veiculo.id)">
+                                                @click="excluir(veiculo.id,veiculo.modelo, veiculo.preco)">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>
 
