@@ -11,7 +11,8 @@ new Vue({
         ano: null,
         preco: null,
       },
-      filtro:""// declarar uma variavel 
+      filtro:"",// declarar uma variavel 
+      erros:[],
     };
   },
   mounted() {
@@ -25,7 +26,10 @@ new Vue({
         this.filtro = '';
     },
 
-    salvar() {
+    salvar() {// essa verificação tem que ser no metodo salvar pois ele tem que pegar tanto na inclusao como na alteração
+      if(!this.verificaForm()){// se retornar um false
+        return;
+      }
       if (this.veiculo.id) {// inclusao ou alteração, esse é o motivo para usar o if, se tiver o id
         axios
           .put(`http://127.0.0.1:5000/veiculos/${this.veiculo.id}`, this.veiculo) // indicar os dados que vão ser enviados
@@ -69,16 +73,53 @@ new Vue({
       }
     },
     pesquisar() {
-      if(this.filtro.lenght == 0){
+      if(this.filtro.length == 0){
         this.listar();
       } else{
       axios
         // .get('http://127.0.0.1:5000/veiculos/pesq/')
         .get(`http://127.0.0.1:5000/veiculos/pesq/${this.filtro}`)
         .then(response => (this.veiculos = response.data));
+        
       }
     },
+
+    verificaForm() {
+      // limpa vetor de erros
+      this.erros = [];
+      if (
+        this.veiculo.marca &&
+        this.veiculo.modelo &&
+        this.veiculo.cor &&
+        this.veiculo.ano &&
+        this.veiculo.preco &&
+        this.veiculo.preco >= 9999 &&
+        this.veiculo.preco <= 200000
+      ) {
+        return true;
+      }
+
+      if (!this.veiculo.marca) {
+        this.erros.push("A marca do Veículo é Obrigatoria.");
+      }
+      if (!this.veiculo.modelo) {
+        this.erros.push("O modelo do Veículo é Obrigatorio.");
+      }
+      if (!this.veiculo.cor) {
+        this.erros.push("A cor do Veículo é Obrigatorio.");
+      }
+      if (!this.veiculo.ano) {
+        this.erros.push("O ano do Veículo é Obrigatorio.");
+      }
+      if (this.veiculo.preco < 10000 || this.veiculo.preco > 200000) {
+        this.erros.push("Preço deve ser maior que 9999 e menor que 200.000");
+      }
+      return false;
+    },
+  
+
   },
+
   filters:{
     formataPreco(value){
       return value.toFixed(1)
