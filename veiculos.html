@@ -41,6 +41,12 @@
                 <div class="col-sm-4">
                     <div class="card">
                         <h5 class="card-header">Cadastro de Veiculos Avenida</h5>
+                        <p v-if="erros.length" class="text-danger small">
+                            <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
+                            <ul>
+                                <li v-for="erro in erros" class="text-danger small">{{ erro }}</li>
+                            </ul>
+                        </p>
                         <div class="card-body">
                             <form @submit.prevent="salvar">
                                 <div class="form-group">
