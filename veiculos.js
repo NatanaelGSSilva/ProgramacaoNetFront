@@ -3,6 +3,9 @@ new Vue({
   data() {
     return {
       veiculos: null,
+      contagem: null,
+      maiorValor: null,
+      menorValor: null,
       veiculo: {
         id: null,
         marca: null,
@@ -24,6 +27,9 @@ new Vue({
         .get('http://127.0.0.1:5000/veiculos')
         .then(response => (this.veiculos = response.data));
         this.filtro = '';
+        this.totalVeiculos();
+        this.veiculoMaisCaro();
+        this.veiculoMaisBarato();
     },
 
     salvar() {// essa verificação tem que ser no metodo salvar pois ele tem que pegar tanto na inclusao como na alteração
@@ -84,6 +90,21 @@ new Vue({
       }
     },
 
+    totalVeiculos() {
+      axios.get('http://127.0.0.1:5000/veiculos/estatistica/total')
+      .then(response => (this.contagem = response.data.total));
+    },
+
+    veiculoMaisCaro() {
+      axios.get('http://127.0.0.1:5000/veiculos/estatistica/contagem/maior')
+      .then(response => (this.maiorValor = response.data));
+    },
+
+    veiculoMaisBarato() {
+      axios.get('http://127.0.0.1:5000/veiculos/estatistica/contagem/menor')
+      .then(response => (this.menorValor = response.data));
+    },
+
     verificaForm() {
       // limpa vetor de erros
       this.erros = [];
@@ -122,7 +143,16 @@ new Vue({
 
   filters:{
     formataPreco(value){
-      return value.toFixed(1)
+      if(value != null) {
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+      }      
+    },
+    formataVeiculo(veiculo) {
+      if( veiculo != null) {
+        
+       return "Modelo: " + veiculo[0].modelo + " Marca: " + veiculo[0].marca + " R$: ";
+       
+      }
     }
   }
 });

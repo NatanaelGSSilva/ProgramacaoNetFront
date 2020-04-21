@@ -138,6 +138,13 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div v-if="veiculos.length > 0 && veiculos.length == contagem" class="div">
+                                <ul>
+                                    <li class="text-primary ">Total de veículos cadastrados: {{ contagem }}</li>
+                                    <li class="text-primary "> Veículo mais caro: {{ maiorValor | formataVeiculo }} <strong>{{ maiorValor[0].preco | formataPreco}}</strong></li>
+                                    <li class="text-primary "> Veículo mais barato: {{ menorValor | formataVeiculo }} <strong>{{ menorValor[0].preco | formataPreco}}</strong></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
